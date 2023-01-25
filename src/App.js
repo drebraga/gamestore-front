@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import GlobalStyle from "./Styles/Reset"
-import SignUp from "./pages/SignUpPage/SignUp";
+import SignUp from "./Pages/SignUpPage/SignUp";
 
 function App() {
   return (
