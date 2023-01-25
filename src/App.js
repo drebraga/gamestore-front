@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import GlobalStyle from "./Styles/Reset"
+import SignUp from "./pages/SignUpPage/SignUp";
 
 function App() {
   return (
@@ -8,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={"Home"} />
         <Route path="/login" element={"Login"} />
-        <Route path="/cadastro" element={"Cadastro"} />
+        <Route path="/cadastro" element={<SignUp/>} />
         <Route path="/carrinho" element={"Carrinho"} />
         {/* <Route path="/:compra?" element={"Pagina Final"} /> */}
         <Route path="*" element={"Erro, caminho errado"} />
