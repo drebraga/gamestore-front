@@ -7,8 +7,8 @@ export const HomeContainer = styled.div`
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding-top: 70px;
-    padding-left: 50px;
+    align-items: center;
+    padding: 90px 4% 4% 4%;
 `;
 
 export const Title = styled.h2`
@@ -17,13 +17,39 @@ export const Title = styled.h2`
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
+    margin: 1%;
+    width: 100%;
+`;
+
+export const Search = styled.div`
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 300px;
+    height: 40px;
+    background: #8A8A8A;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    padding: 0 1%;
+`;
+
+export const SearchInput = styled.input`
+    width: 90%;
+    height: 38px;
+    border: none;
+    background: none;
+    padding: 0 1%;
+    ::placeholder {
+        color: black;
+    }
 `;
 
 export const GameList = styled.ul`
     font-family: 'Inter', sans-serif;
     display: flex;
     flex-wrap: wrap;
-    justify-content:space-evenly;
+    justify-content: space-between;
 `;
 
 export const GameCard = styled.li`
@@ -38,7 +64,7 @@ export const GameCard = styled.li`
     width: 220px;
     height: 260px;
     padding: 10px;
-    margin: 1%;
+    margin: 2% 1%;
 `;
 
 export const GameTitle = styled.h3`
