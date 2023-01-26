@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import GlobalStyle from "./Styles/Reset"
-import SignUp from "./Pages/SignUpPage/SignUp";
 import HomePage from "./Pages/HomePage/HomePage.js";
+import LoginPage from "./Pages/LoginPage.js/LoginPage";
+import SignUpPage from "./Pages/SignUpPage/SignUpPage";
 
 
 function App() {
@@ -10,8 +11,8 @@ function App() {
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={"Login"} />
-        <Route path="/cadastro" element={<SignUp/>} />
+        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/cadastro" element={<SignUpPage/>} />
         <Route path="/carrinho" element={"Carrinho"} />
         {/* <Route path="/:compra?" element={"Pagina Final"} /> */}
         <Route path="*" element={"Erro, caminho errado"} />
