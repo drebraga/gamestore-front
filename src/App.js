@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import GlobalStyle from "./Styles/Reset"
+import HomePage from "./Pages/HomePage/HomePage.js";
 
 import { Cart } from "./pages/Cart";
 
@@ -8,7 +9,7 @@ function App() {
     <BrowserRouter>
       <GlobalStyle />
       <Routes>
-        <Route path="/" element={"Home"} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={"Login"} />
         <Route path="/cadastro" element={"Cadastro"} />
         <Route path="/carrinho" element={<Cart />} />
