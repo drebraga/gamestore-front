@@ -17,15 +17,15 @@ const HomePage = () => {
     const [resultSearch, setResultSearch] = useState(false);
     const [load, setLoad] = useState(false);
 
-    // useEffect(() => {
-    //     axios.get(`${process.env.REACT_APP_API_URL}/gamesCatalog`)
-    //         .then((res) => {
-    //             setGameList(res.data);
-    //         })
-    //         .catch((err) => {
-    //             console.log(err.response.data);
-    //         })
-    // }, []);
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API_URL}/catalog`)
+            .then((res) => {
+                setGameList(res.data);
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+            })
+    }, []);
 
     if (!gameList) {
         return (
@@ -41,15 +41,15 @@ const HomePage = () => {
     function search(e) {
         e.preventDefault();
         setLoad(true);
-        // axios.get(`${process.env.REACT_APP_API_URL}/gamesCatalog/${searchInput}`)
-        //     .then((res) => {
-        //         setLoad(false);
-        //         setResultSearch(true);
-        //         setGameList(res.data);
-        //     })
-        //     .catch((err) => {
-        //         console.log(err.response.data);
-        //     })
+        axios.get(`${process.env.REACT_APP_API_URL}/catalog/${searchInput}`)
+            .then((res) => {
+                setLoad(false);
+                setResultSearch(true);
+                setGameList(res.data);
+            })
+            .catch((err) => {
+                console.log(err.response.data);
+            })
     }
 
     return (
