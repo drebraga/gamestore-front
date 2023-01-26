@@ -4,7 +4,7 @@ import useWindowDimensions from "../../hooks/useWindowDimensions.js";
 
 import { ListedItem } from "../../components/ListedItem/index.js";
 import { ProductCard } from "../../components/ProductCart/index.js";
-import { MainButton } from "../../components/MainButton/index.js";
+import Header from "../../Components/Header/Header.js";
 
 import {
   Container,
@@ -24,14 +24,16 @@ import {
   SITitle,
   SIList,
   Footer,
-  FooterInnerContainer,
+  ButtonContainer,
+  ButtonText
 } from "./styles.js";
 
 export function Cart() {
   const { height, width } = useWindowDimensions();
 
   return (
-    <Container>
+    <Container height={height}>
+      <Header />
       <ContentContainer>
         <Title>Carrinho</Title>
         <InnerContainer>
@@ -103,14 +105,22 @@ export function Cart() {
                 </SelectedItemsContainer>
               </RightList>
 
-              <MainButton buttonText={"Confirmar Compra"} />
+              <ButtonContainer>
+              <ButtonText>
+                Confirmar Compra
+              </ButtonText>
+            </ButtonContainer>
             </RightContent>
           )}
         </InnerContainer>
 
         {width < 1024 && (
           <Footer>
-            <MainButton buttonText={"Confirmar Compra"} width={width <= 768? "100%" : ""}/>
+            <ButtonContainer width={width < 768 ? width : 464}>
+              <ButtonText>
+                Confirmar Compra
+              </ButtonText>
+            </ButtonContainer>
             {width > 768 && (
               <RCValue>
                 <span>{"\u007B"}</span>R$ 00,00<span>{"\u007D"}</span>

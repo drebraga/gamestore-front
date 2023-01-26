@@ -2,9 +2,10 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: ${(props) => props.height}px;
   display: flex;
   padding: 0 20px;
+  padding-top: 60px;
   justify-content: center;
   background-color: #242424;
 `;
@@ -127,15 +128,32 @@ export const SIList = styled.ul``;
 
 export const Footer = styled.div`
   width: 97%;
-  display: flex;
+  display: flex;  
   justify-content: space-between;
   align-items: center;
-  position: fixed;
-  bottom: 20px;
 
   span {
     color: #da00fe;
   }
 `;
+
+export const ButtonContainer = styled.div`
+  width: ${(props) => props.width}px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #a100ed;
+  border-radius: 8px;
+  cursor: pointer;
+`;
+
+export const ButtonText = styled.div`
+  font-family: "Inter";
+  font-weight: 600;
+  font-size: 20px;
+  color: #ffffff;
+`;
+
 
 

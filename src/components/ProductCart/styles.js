@@ -50,6 +50,10 @@ export const Image = styled.img`
   width: 100px;
   height: 115px;
   margin-left: 85px;
+
+  @media (max-width: 550px) {
+    margin-left: 0px;
+  }
 `;
 
 export const DescriptionContainer = styled.div`
