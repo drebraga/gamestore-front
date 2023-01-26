@@ -21,7 +21,7 @@ export const Title = styled.h2`
     width: 100%;
 `;
 
-export const Search = styled.div`
+export const Search = styled.form`
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -34,12 +34,29 @@ export const Search = styled.div`
     padding: 0 1%;
 `;
 
+export const Load = styled.div`
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 40px;
+    background: #8A8A8A;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+`;
+
 export const SearchInput = styled.input`
+    :focus{
+        outline: none;
+        background-color: #999999;
+    }
     width: 90%;
-    height: 38px;
+    height: 30px;
     border: none;
     background: none;
-    padding: 0 1%;
+    border-radius: 10px;
+    padding: 3%;
     ::placeholder {
         color: black;
     }
