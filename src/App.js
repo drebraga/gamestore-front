@@ -4,7 +4,7 @@ import HomePage from "./Pages/HomePage/HomePage.js";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import SignUpPage from "./Pages/SignUpPage/SignUpPage";
 import CheckoutPage from "./Pages/CheckoutPage/CheckoutPage";
-
+import { Cart } from "./pages/Cart"; 
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/cadastro" element={<SignUpPage/>} />
-        <Route path="/carrinho" element={"Carrinho"} />
+        <Route path="/carrinho" element={<Cart />} />
         <Route path="/checkout" element={<CheckoutPage/>} />
         {/* <Route path="/:compra?" element={"Pagina Final"} /> */}
         <Route path="*" element={"Erro, caminho errado"} />
