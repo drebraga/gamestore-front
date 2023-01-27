@@ -5,8 +5,8 @@ import { Square, TrashSimple, CheckSquareOffset } from "phosphor-react";
 
 import useWindowDimensions from "../../hooks/useWindowDimensions.js";
 
-import { ListedItem } from "../../components/ListedItem/index.js";
-import { ProductCard } from "../../components/ProductCart/index.js";
+import { ListedItem } from "../../Components/ListedItem/ListedItem.js";
+import { ProductCard } from "../../Components/ProductCart/ProductCart.js";
 import Header from "../../Components/Header/Header.js";
 
 import {
@@ -29,7 +29,7 @@ import {
   Footer,
   ButtonContainer,
   ButtonText,
-} from "./styles.js";
+} from "./styled.js";
 
 const mock = [
   {
@@ -61,7 +61,7 @@ const mock = [
   },
 ];
 
-export function Cart() {
+export default function Cart() {
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([...mock]);

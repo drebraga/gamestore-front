@@ -2,8 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import GlobalStyle from "./Styles/Reset"
 import SignUp from "./Pages/SignUpPage/SignUp";
 import HomePage from "./Pages/HomePage/HomePage.js";
-
-import { Cart } from "./pages/Cart";
+import Cart from "./Pages/CartPage/CartPage.js";
 
 function App() {
   return (

@@ -16,7 +16,7 @@ import {
   IncreaseButton,
   HeaderInnerContainer,
   DescriptionContainer,
-} from "./styles.js";
+} from "./styled.js";
 
 export function ProductCard({ isSelected, products, setProducts, product, selectedProducts, setSelectedProducts }) {
 
