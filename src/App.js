@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Context from "./Context/Context";
 import GlobalStyle from "./Styles/Reset"
-import SignUp from "./Pages/SignUpPage/SignUp";
 import HomePage from "./Pages/HomePage/HomePage.js";
 import { Cart } from "./Pages/Cart";
 import { useState } from "react";
+import LoginPage from "./Pages/LoginPage/LoginPage";
+import SignUpPage from "./Pages/SignUpPage/SignUpPage";
+
 
 function App() {
   const [token, setToken] = useState(JSON.parse(localStorage.getItem("token")));

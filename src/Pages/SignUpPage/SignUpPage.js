@@ -1,13 +1,15 @@
-import { BoxLeft, BoxRight, Logo, Page, Title } from "./styled";
+import { BoxLeft, BoxRight, HiddenLogo, Logo, Page, Title } from "./styled";
 import logomarca from "../../assets/images/logo.svg";
 import { useState } from "react";
 import { StyledLink } from "./styled";
 import { ThreeDots } from "react-loader-spinner";
-import { StyledForm } from "../../components/StyledForm";
+import { StyledForm } from "../../Components/StyledForm";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Carousel from "../../Components/Carousel/Carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-export default function SignUp() {
+export default function SignUpPage() {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -15,7 +17,7 @@ export default function SignUp() {
     repeatPassword: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function handleForm(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -24,15 +26,18 @@ export default function SignUp() {
   function createAccount(e) {
     e.preventDefault();
 
-    const URL = `${process.env.REACT_APP_API_URL}/sign-up`
+    const URL = `${process.env.REACT_APP_API_URL}/sign-up`;
 
-    axios.post(URL,form).then((res)=>{
-      console.log(res.data)
-      setIsLoading(true)
-      navigate("/login")
-    }).catch(err =>{
-      console.log(err.response.data.message)
-    })
+    axios
+      .post(URL, form)
+      .then((res) => {
+        console.log(res.data);
+        setIsLoading(true);
+        navigate("/login");
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+      });
   }
 
   return (
@@ -45,8 +50,13 @@ export default function SignUp() {
             <h3>STORE</h3>
           </section>
         </Logo>
+        <Carousel />
       </BoxLeft>
       <BoxRight>
+        <HiddenLogo>
+          <img src={logomarca} />
+        </HiddenLogo>
+
         <Title>
           <div></div>
           <h1>Crie uma Conta</h1>
