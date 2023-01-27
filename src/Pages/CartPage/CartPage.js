@@ -61,7 +61,7 @@ const mock = [
   },
 ];
 
-export default function Cart() {
+export default function CartPage() {
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([...mock]);
