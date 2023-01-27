@@ -29,13 +29,14 @@ export const StyledForm = styled.form`
     border: none;
     margin-top: 30px;
     margin-bottom: 60px;
+    cursor: pointer;
   }
 
   @media (max-width: 834px) {
-    input{
+    input {
       margin-bottom: 40px;
     }
-    button{
+    button {
       margin-top: 10px;
       margin-bottom: 30px;
     }

@@ -55,19 +55,19 @@ export const HiddenLogo = styled.div`
   width: 100%;
   display: none;
   margin-bottom: 20px;
-  img{
+  img {
     width: 84px;
   }
   @media (max-width: 834px) {
     display: flex;
     justify-content: center;
   }
-`
+`;
 
 export const BoxRight = styled.aside`
   width: 55%;
   height: 100vh;
-  padding: 30px 18% 30px 50px;
+  padding: 30px 15% 30px 8%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -94,16 +94,20 @@ export const Title = styled.header`
 
   div {
     width: 8px;
-    height: 40px;
+    height: 100%;
     background-color: #a100ed;
     margin-right: 10px;
-    border-radius: 8px;
   }
 
   @media (max-width: 834px) {
     width: 100%;
     justify-content: center;
     margin-bottom: 20px;
+  }
+  @media (max-width: 428px) {
+    h1 {
+      font-size: 28px;
+    }
   }
 `;
 
