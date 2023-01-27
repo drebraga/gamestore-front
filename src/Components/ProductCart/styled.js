@@ -4,10 +4,11 @@ export const Container = styled.div`
   width: 100%;
   height: 205px;
   display: flex;
-  padding: 15px;
+  padding: ${(props) => props.isAllSelected === true ? 14 : 15}px;
   flex-direction: column;
   background-color: #323232;
   border-radius: 8px;
+  border: ${(props) => props.isSelected === true ? "1px solid #da00fe" : "none"};
   margin-bottom: 24px;
 `;
 

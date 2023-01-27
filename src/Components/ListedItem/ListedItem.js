@@ -3,7 +3,7 @@ import {
     Title,
     Quantity,
     Price,
-} from "./styles.js";
+} from "./styled.js";
 
 export function ListedItem({gameName, gameQuantity, gamePrice}) {
     return (
