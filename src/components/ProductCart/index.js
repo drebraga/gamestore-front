@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Square, TrashSimple } from "phosphor-react";
+import { CheckSquareOffset, Square, TrashSimple } from "phosphor-react";
 
 import {
   Container,
@@ -18,46 +18,90 @@ import {
   DescriptionContainer,
 } from "./styles.js";
 
-export function ProductCard({ isSelected, title, type, image, value }) {
+export function ProductCard({ isSelected, products, setProducts, product, selectedProducts, setSelectedProducts }) {
 
-  const [ quantity, setQuantity ] = useState(1)
+  const [select, setSelect] = useState(false);
 
-  function handleDecrement() {
-    if(quantity > 1) {
-      setQuantity(prevCount => prevCount - 1);
-    };    
-  };
+  function handleDecrement(product) {
+    if (product.qty > 1) {
+      let index = products.indexOf(product);
+      let arr = [...products];
+      arr[index].qty -= 1;
+
+      setProducts(arr)
+    }
+  }
 
   function handleIncrement() {
-    if(quantity < 10) {
-      setQuantity(prevCount => prevCount + 1);
-    };
-  };
+    if (product.qty < 10) {
+      let index = products.indexOf(product);
+      let arr = [...products];
+      arr[index].qty += 1
+      
+      setProducts(arr)
+    }
+  }
+
+  function handleSelect(product) {
+    let index = selectedProducts.indexOf(product);
+
+    if(index === -1) {
+      let arr = [...selectedProducts, product];
+      setSelectedProducts(arr)
+      setSelect(true)
+    }
+    else {
+      let arr = [...selectedProducts];
+      arr.splice(index, 1);
+      setSelectedProducts(arr)
+      setSelect(false)
+    }
+  }
+
+  function handleDelete(product) {
+    let index = products.indexOf(product);
+    let arr = [...products];
+    arr.splice(index, 1);
+    setProducts(arr);
+
+    let indexSelected = selectedProducts.indexOf(product);
+    if(indexSelected !== -1) {
+      let arr = [...selectedProducts];
+      arr.splice(indexSelected, 1);
+      setSelectedProducts(arr);
+    }
+    
+  }
 
   return (
-    <Container isSelected={isSelected}>
+    <Container isSelected={isSelected || select} >
       <Header>
-        <HeaderInnerContainer>
-          <Square color="#8A8A8A" size={33} weight="bold" />
-          <Title>{title}</Title>
+        <HeaderInnerContainer onClick={() => handleSelect(product)}>
+          {isSelected || select ? (
+            <CheckSquareOffset color="#da00fe" size={33} weight="bold" />
+          ) : (
+            <Square color="#8A8A8A" size={33} weight="bold" />
+          )}
+
+          <Title>{product.title}</Title>
         </HeaderInnerContainer>
-        <TrashSimple color="#8A8A8A" size={33} weight="bold" />
+        <TrashSimple color="#8A8A8A" size={33} weight="bold" onClick={() => handleDelete(product)} />
       </Header>
 
       <Content>
         <ContentInnerContainer>
-          <Image src={image} />
+          <Image src={product.image} />
           <DescriptionContainer>
-            <Type>{type}</Type>
+            <Type>{product.type}</Type>
 
-            <Price>R$ {value.toFixed(2).toString().replace(".", ",")}</Price>
+            <Price>R$ {product.value.toFixed(2).toString().replace(".", ",")}</Price>
           </DescriptionContainer>
         </ContentInnerContainer>
         <ButtonContainer>
-          <DecreaseButton onClick={handleDecrement}>-</DecreaseButton>
-          <Quantity>{quantity}</Quantity>
+          <DecreaseButton onClick={() => handleDecrement(product)} disabled={isSelected || select}>-</DecreaseButton>
+          <Quantity>{product.qty}</Quantity>
 
-          <IncreaseButton onClick={handleIncrement}>+</IncreaseButton>
+          <IncreaseButton onClick={() => handleIncrement(product)} disabled={isSelected || select}>+</IncreaseButton>
         </ButtonContainer>
       </Content>
     </Container>
