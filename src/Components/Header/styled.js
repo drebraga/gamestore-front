@@ -24,9 +24,7 @@ export const LogoContainer = styled.div`
 
 export const MenuContainer = styled.div`
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    width: 160px;
 `;
 
 export const LogoStyle = styled.img`
@@ -50,4 +48,32 @@ export const Title1 = styled.h1`
 export const Title2 = styled.h1`
     text-align: end;
     font-weight: 700;
+`;
+
+export const MenuIcon = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    border: 1px solid #DA00FF;
+    margin-left: 5px;
+    position: relative;
+    p {
+        font-size: 11px;
+        color: #000000;
+        background-color: #DA00FF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid #000000;
+        margin-left: 5px;
+        position: absolute;
+        top: -5px;
+        right: -5px;
+    }    
 `;
