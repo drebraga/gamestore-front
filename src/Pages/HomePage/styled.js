@@ -111,7 +111,7 @@ export const GameImage = styled.img`
 `;
 
 export const AddCartDiv = styled.div`
-    width: 75%;
+    width: 80%;
     display: flex;
     justify-content: space-between;
     align-items: center;

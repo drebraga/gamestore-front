@@ -1,3 +1,4 @@
+// import { Link } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -33,6 +34,7 @@ export const LeftContent = styled.div`
 
   @media (max-width: 834px) {
     justify-content: center;
+    width: 95%;
   }
 `;
 
@@ -54,7 +56,7 @@ export const MainTitle = styled.header`
   }
   @media (max-width: 400px) {
     padding: 0;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     h1 {
       font-size: 25px;
     }
@@ -90,7 +92,7 @@ export const MainText = styled.div`
   }
 `;
 
-export const StyledButton = styled(Link)`
+export const NavButton = styled(Link)`
   height: 70px;
   width: 350px;
   border-radius: 8px;
@@ -103,18 +105,18 @@ export const StyledButton = styled(Link)`
   align-items: center;
   font-size: 20px;
   font-weight: 600;
+  margin-top: 100px;
   cursor: pointer;
-
-
   @media (max-width: 400px) {
     width: 100%;
+    margin: 40px;
   }
 `;
 
 export const Logo = styled.div`
   display: flex;
-  inset: 20px;
-  z-index: 3;
+  left: 20px;
+  top: 10px;
   position: fixed;
   color: #da00ff;
   img {
@@ -132,6 +134,9 @@ export const Logo = styled.div`
     }
   }
   @media (max-width: 428px) {
+    img{
+      opacity: 0.4;
+    }
     section {
       display: none;
     }
@@ -142,8 +147,8 @@ export const RightLogo = styled.div`
   height: 237px;
   width: 233px;
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  bottom: 30px;
+  right: 40px;
 `;
 
 export const HiddenLogo = styled.div`

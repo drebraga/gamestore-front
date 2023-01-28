@@ -9,7 +9,7 @@ import {
   MainTitle,
   RightContent,
   RightLogo,
-  StyledButton,
+  NavButton,
 } from "./styled";
 import logo from "../../assets/images/logo.svg";
 import image from "../../assets/images/image.svg";
@@ -40,10 +40,11 @@ export default function CheckoutPage() {
             </HiddenLogo>
             <MainText>
               Nós da equipe <span>GAME STORE</span> agradecemos a sua confiança
-              na qualidade de nossos serviços, esperamos te ver de novo em breve
-              :)
+              na qualidade de nossos serviços, volte sempre :)
             </MainText>
-            <StyledButton to="/">Continuar Comprando</StyledButton>
+            <NavButton onClick={()=>{
+              console.log("cliquei")
+            }} to="/">Continuar Comprando</NavButton>
           </LeftContent>
           <RightContent>
             <RightLogo>

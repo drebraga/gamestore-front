@@ -2,12 +2,13 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
-  height: ${(props) => props.height}px;
+  min-height: 100vh;
   display: flex;
-  padding: 0 20px;
+  padding: 0 40px;
   padding-top: 60px;
   justify-content: center;
   background-color: #242424;
+  padding-bottom: 40px;
 `;
 
 export const Title = styled.h1`
@@ -48,7 +49,7 @@ export const LeftContent = styled.div`
 `;
 
 export const RightContent = styled.div`
-  width: 40%px;
+  width: 40%;
 `;
 
 export const SelectAll = styled.div`
@@ -57,8 +58,9 @@ export const SelectAll = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border: ${(props) => props.isAllSelected === true ? "1px solid #da00fe" : "none"};
   border-radius: 8px;
-  padding: 15px;
+  padding: ${(props) => props.isAllSelected === true ? 14 : 15}px;
   background-color: #323232;
   margin-bottom: 40px;
 `;
