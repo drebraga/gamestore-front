@@ -5,6 +5,7 @@ import CartPage from "./Pages/CartPage/CartPage";
 import { useState } from "react";
 import Context from "./Context/Context";
 import SignUpPage from "./Pages/SignUpPage/SignUpPage";
+import CheckoutPage from "./Pages/CheckoutPage/CheckoutPage";
 import LoginPage from "./Pages/LoginPage/LoginPage"
 
 function App() {
@@ -17,8 +18,10 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/cadastro" element={<SignUpPage/>} />
           <Route path="/carrinho" element={<CartPage />} />
           <Route path="/cadastro" element={<SignUpPage />} />
+          <Route path="/checkout" element={<CheckoutPage/>} />
           {/* <Route path="/:compra?" element={"Pagina Final"} /> */}
           <Route path="*" element={"Erro, caminho errado"} />
         </Routes>
