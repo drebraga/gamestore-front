@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-
 import { Square, TrashSimple, CheckSquareOffset } from "phosphor-react";
+
+import { api } from "../../Services/api.js";
 
 import useWindowDimensions from "../../hooks/useWindowDimensions.js";
 
@@ -31,40 +32,10 @@ import {
   ButtonText,
 } from "./styled.js";
 
-const mock = [
-  {
-    id: 123,
-    title: "Grand Theft Auto",
-    type: "Ação/Aventura",
-    image:
-      "https://s2.glbimg.com/pVUTlvwHrlm44bi3yyYTOElUzw8=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2021/1/9/8cOmg9TkaB2PgkS1sUjQ/2013-04-02-gta5-capa-rockstar-.jpg",
-    value: 40,
-    qty: 1
-  },
-  {
-    id: 456,
-    title: "Grand Theft Auto",
-    type: "Ação/Aventura",
-    image:
-      "https://s2.glbimg.com/pVUTlvwHrlm44bi3yyYTOElUzw8=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2021/1/9/8cOmg9TkaB2PgkS1sUjQ/2013-04-02-gta5-capa-rockstar-.jpg",
-    value: 10,
-    qty: 1
-  },
-  {
-    id: 789,
-    title: "Grand Theft Auto",
-    type: "Ação/Aventura",
-    image:
-      "https://s2.glbimg.com/pVUTlvwHrlm44bi3yyYTOElUzw8=/1200x/smart/filters:cover():strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2021/1/9/8cOmg9TkaB2PgkS1sUjQ/2013-04-02-gta5-capa-rockstar-.jpg",
-    value: 40,
-    qty: 1
-  },
-];
-
 export default function CartPage() {
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [products, setProducts] = useState([...mock]);
+  const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);  
 
   const { height, width } = useWindowDimensions();
@@ -86,8 +57,17 @@ export default function CartPage() {
     }
   }
 
-  function handleDeleteAllItems() {
+  async function handleDeleteAllItems() {
     if(window.confirm("Você tem certeza que deseja limpar o seu carrinho?")) {
+      try {
+        await api.put("/clear-cart", {
+          headers: {
+            Authorization: `Bearer e567ff5b-ac02-4c14-8b2f-1361409d3c97`
+          }
+        })
+      } catch (error) {
+        console.log(error);
+      }
       setProducts([]);
       setSelectedProducts([]);
       setTotalPrice(0);
@@ -95,13 +75,40 @@ export default function CartPage() {
     }
   }
 
-  function handlePurchaseConfirmation() {
+  async function handlePurchaseConfirmation() {
     if(selectedProducts.length === 0) {
       alert("Você precisa selecionar ao menos um item.");
       return;
     }
 
-    navigate("/checkout");
+    try {
+      await api.put("/update-cart", {
+        headers: {
+          Authorization: `Bearer e567ff5b-ac02-4c14-8b2f-1361409d3c97`
+        }, updatedCart: [...products]
+      })
+
+
+
+      navigate("/checkout");
+    } catch (error) {
+      console.log(error);
+    }    
+  }
+
+  async function getCartItems() {
+    try {
+      const items = await api.get("/cart", {
+        headers: {
+          Authorization: `Bearer e567ff5b-ac02-4c14-8b2f-1361409d3c97`
+        }
+      })
+
+      console.log(items.data);
+      setProducts(items.data)
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(()=> {
@@ -117,12 +124,17 @@ export default function CartPage() {
 
   useEffect(()=> {
     if(selectedProducts.length > 0) {
-      let total = selectedProducts.map((i) => i.value * i.qty).reduce((a, b) => a + b);
+      let total = selectedProducts.map((i) => i.price * i.qty).reduce((a, b) => a + b);
       setTotalPrice(total);
     } else {
       setTotalPrice(0);
     }
   }, [selectedProducts])
+
+  useEffect(() => {
+    getCartItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container height={height}>
@@ -146,7 +158,7 @@ export default function CartPage() {
 
             {products.map((product) => (
               <ProductCard
-                key={product.id}
+                key={product.name}
                 isSelected={isAllSelected}
                 product={product}
                 products={products}
@@ -177,9 +189,9 @@ export default function CartPage() {
                     {selectedProducts.map((product, index) => (
                       <ListedItem
                         key={index}
-                        gameName={product.title}
+                        gameName={product.name}
                         gameQuantity={product.qty}
-                        gamePrice={product.value * product.qty}
+                        gamePrice={product.price * product.qty}
                       />
                     ))}
                   </SIList>
