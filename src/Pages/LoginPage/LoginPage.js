@@ -25,9 +25,10 @@ export default function LoginPage() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const tokenSize = 36;
 
   useEffect(() => {
-    if (token !== null) {
+    if (token === tokenSize) {
       setIsLoading(true);
       axios.get(`${process.env.REACT_APP_API_URL}/sign-in`, {
         headers: {
@@ -36,7 +37,6 @@ export default function LoginPage() {
       })
         .then((res) => {
           setIsLoading(false);
-          console.log(res.data)
           setToken(res.data);
           localStorage.setItem("token", JSON.stringify(res.data));
           navigate("/");
