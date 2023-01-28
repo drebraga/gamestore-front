@@ -20,7 +20,7 @@ const HomePage = () => {
     const [resultSearch, setResultSearch] = useState(false);
     const [load, setLoad] = useState(false);
     const [update, setUpdate] = useState(false);
-    const { token } = useContext(Context);
+    const token = {headers: {Authorization: "Bearer bc6b8a0b-8e31-4847-b870-76f86220e976"}}
 
         useEffect(() => {
             axios.get(`${process.env.REACT_APP_API_URL}/catalog`)
