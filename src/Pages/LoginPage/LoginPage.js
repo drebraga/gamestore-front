@@ -22,7 +22,7 @@ export default function LoginPage() {
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   function handleForm(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
