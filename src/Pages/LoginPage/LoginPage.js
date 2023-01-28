@@ -27,7 +27,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token !== null) {
+    if (token.length === 36) {
       setIsLoading(true);
       axios.get(`${process.env.REACT_APP_API_URL}/sign-in`, {
         headers: {
@@ -36,7 +36,6 @@ export default function LoginPage() {
       })
         .then((res) => {
           setIsLoading(false);
-          console.log(res.data)
           setToken(res.data);
           localStorage.setItem("token", JSON.stringify(res.data));
           navigate("/");
