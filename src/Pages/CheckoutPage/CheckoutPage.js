@@ -18,7 +18,7 @@ import ErrorPage from "../../Components/Error404/ErrorPage";
 export default function CheckoutPage() {
   const { token } = useContext(Context);
 
-  if (token === null) {
+  if (token === null || token === "") {
     return < ErrorPage/>;
   }
 

@@ -12,7 +12,7 @@ export const AlertBox = styled.div`
     z-index: 0;
     max-width: 360px;
     width: 100%;
-    min-height: 50px;
+    min-height: 90px;
     background-color: #000000;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 15px;
