@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Square, TrashSimple, CheckSquareOffset } from "phosphor-react";
+import { ThreeDots } from "react-loader-spinner";
 
 import { api } from "../../Services/api.js";
 
@@ -39,6 +40,7 @@ export default function CartPage() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const { height, width } = useWindowDimensions();
 
@@ -68,8 +70,10 @@ export default function CartPage() {
   }
 
   async function handleDeleteAllItems(finalConfirmation) {
-    if(finalConfirmation === false) {
-      if (window.confirm("Você tem certeza que deseja limpar o seu carrinho?")) {
+    if (finalConfirmation === false) {
+      if (
+        window.confirm("Você tem certeza que deseja limpar o seu carrinho?")
+      ) {
         try {
           await api.delete("/clean-cart", {
             headers: {
@@ -99,10 +103,7 @@ export default function CartPage() {
       setTotalPrice(0);
       setIsAllSelected(false);
     }
-    
   }
-
-
 
   async function handlePurchaseConfirmation() {
     if (selectedProducts.length === 0) {
@@ -110,17 +111,25 @@ export default function CartPage() {
       return;
     }
 
-    try {
-      await api.post("checkout", {updatedCart:[...selectedProducts]}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }});
+    setLoading(true);
 
-        const finalConfirmation = true;
+    try {
+      await api.post(
+        "checkout",
+        { updatedCart: [...selectedProducts] },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const finalConfirmation = true;
       handleDeleteAllItems(finalConfirmation);
       navigate("/checkout");
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   }
 
@@ -128,8 +137,6 @@ export default function CartPage() {
     try {
       const items = await api.get("/cart", headerToken);
 
-      console.log(token);
-      console.log(items.data);
       setProducts(items.data);
     } catch (error) {
       console.log(error);
@@ -163,7 +170,7 @@ export default function CartPage() {
   }, []);
 
   return (
-    <Container height={height}>
+    <Container>
       <Header />
       <ContentContainer>
         <Title>Carrinho</Title>
@@ -183,7 +190,7 @@ export default function CartPage() {
                 color="#8A8A8A"
                 size={33}
                 weight="bold"
-                onClick={handleDeleteAllItems}
+                onClick={() => handleDeleteAllItems(true)}
               />
             </SelectAll>
 
@@ -229,7 +236,11 @@ export default function CartPage() {
               </RightList>
 
               <ButtonContainer onClick={handlePurchaseConfirmation}>
-                <ButtonText>Confirmar Compra</ButtonText>
+                {loading ? (
+                  <ThreeDots width={40} height={30} color="#FFFFFF" />
+                ) : (
+                  <ButtonText>Confirmar Compra</ButtonText>
+                )}
               </ButtonContainer>
             </RightContent>
           )}
@@ -241,7 +252,11 @@ export default function CartPage() {
               width={width < 768 ? width : 464}
               onClick={handlePurchaseConfirmation}
             >
-              <ButtonText>Confirmar Compra</ButtonText>
+              {loading ? (
+                  <ThreeDots width={40} height={30} color="#FFFFFF" />
+                ) : (
+                  <ButtonText>Confirmar Compra</ButtonText>
+                )}
             </ButtonContainer>
             {width > 768 && (
               <RCValue>
