@@ -1,14 +1,21 @@
 import styled from "styled-components";
+import background from "../../assets/images/background.svg";
 
 export const HomeContainer = styled.div`
     box-sizing: border-box;
     background-color: #242424;
+    background-image: url(${background});
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     width: 100%;
-    min-height: 100vh;
+    min-height: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 90px 4% 4% 4%;
+    cursor: default;
 `;
 
 export const Title = styled.h2`
@@ -29,9 +36,11 @@ export const Search = styled.form`
     width: 300px;
     height: 40px;
     background: #8A8A8A;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
     padding: 0 1%;
+    border: 1px solid #000000;
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, 
+    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 `;
 
 export const Load = styled.div`
@@ -57,6 +66,7 @@ export const SearchInput = styled.input`
     background: none;
     border-radius: 10px;
     padding: 3%;
+    transition: .5s;
     ::placeholder {
         color: black;
     }
@@ -66,7 +76,7 @@ export const GameList = styled.ul`
     font-family: 'Inter', sans-serif;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
 `;
 
 export const GameCard = styled.li`
@@ -76,18 +86,22 @@ export const GameCard = styled.li`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
     color: #FFFFFF;
     width: 220px;
-    height: 260px;
-    padding: 10px;
-    margin: 2% 1%;
+    height: 400px;
+    padding: 20px;
+    margin: 2% 2%;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, 
+    rgba(0, 0, 0, 0.22) 0px 15px 12px;
 `;
 
 export const GameTitle = styled.h3`
     font-weight: 400;
     font-size: 20px;
     line-height: 29px;
+    text-align: center;
+    width: 95%;
 `;
 
 export const GameCategory = styled.p`
@@ -106,20 +120,36 @@ export const GamePrice = styled.p`
 
 export const GameImage = styled.img`
     width: 60%;
-    aspect-ratio: 1;
-    object-fit: contain;
+    aspect-ratio: 0.7;
+    object-fit: cover;
+    background-color: #FFFFFF;
+    border: 5px solid #FFFFFF;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
+    rgba(0, 0, 0, 0.5) 0px -12px 30px, 
+    rgba(0, 0, 0, 0.5) 0px 4px 6px, 
+    rgba(0, 0, 0, 0.5) 0px 12px 13px, 
+    rgba(0, 0, 0, 0.5) 0px -3px 5px;
 `;
 
 export const AddCartDiv = styled.div`
     width: 80%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
     font-size: 22px;
+    :hover{
+        color: #DA00FE;
+    }
+    :not(:hover){
+        color: #FFFFFF;
+    }
     p{
         font-weight: 400;
         font-size: 12px;
         line-height: 15px;
-        color: #FFFFFF;
+        text-align: start;
+        margin-left: 5%;
     }
+    transition: .3s;
+    cursor: pointer;
 `;
