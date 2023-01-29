@@ -12,6 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ThreeDots } from "react-loader-spinner";
 import Context from "../../Context/Context";
+import Alert from "../../Components/Alert/Alert";
 
 const HomePage = () => {
     const [gameList, setGameList] = useState([]);
@@ -24,9 +25,13 @@ const HomePage = () => {
     const { token } = useContext(Context);
     const headerToken = {
         headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token?.token}`
         }
     };
+    const [alertCall, setAlertCall] = useState({
+        status: false,
+        message: "",
+    });
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_API_URL}/catalog`)
@@ -34,18 +39,18 @@ const HomePage = () => {
                 setGameList(res.data);
             })
             .catch((err) => {
-                console.log(err.response.data);
+                callAlert(err.response.data);
             })
     }, []);
 
     useEffect(() => {
-        if (token) {
+        if (token?.token) {
             axios.get(`${process.env.REACT_APP_API_URL}/cart`, headerToken)
                 .then((res) => {
                     setGameCart(res.data);
                 })
                 .catch((err) => {
-                    console.log(err.response.data);
+                    callAlert(err.response.data);
                 })
         }
     }, [update]);
@@ -70,7 +75,7 @@ const HomePage = () => {
                 setGameSearch(res.data);
             })
             .catch((err) => {
-                console.log(err.response.data);
+                callAlert(err.response.data);
             })
     }
 
@@ -87,8 +92,15 @@ const HomePage = () => {
                 .catch((err) => {
                     console.log(err.response.data);
                 })
+        } else {
+            callAlert("O jogo já está no carrinho!");
         }
 
+    }
+
+    function callAlert(message) {
+        setAlertCall({ ...alertCall, message: message, status: true });
+        setTimeout(setAlertCall, 5000, { status: false });
     }
 
     return (
@@ -97,6 +109,7 @@ const HomePage = () => {
                 routeOrigin={"/"}
                 cartNumber={gameCart.length}
             />
+            {alertCall.status ? <Alert alertCall={alertCall} setAlertCall={setAlertCall} /> : <></>}
             <HomeContainer>
                 {!load ?
                     <Search onSubmit={search}>
@@ -122,11 +135,11 @@ const HomePage = () => {
                     }
                 </Title>
                 <GameList>
-                    {gameSearch.map(e =>
+                    {gameSearch?.map(e =>
                         <GameCard key={e._id}>
                             <GameImage src={e.image} alt={e.name} />
                             <GameTitle>{e.name}</GameTitle>
-                            <GameCategory>{e.category}</GameCategory>
+                            <GameCategory>{e.type}</GameCategory>
                             <GamePrice>R$ {e.price}</GamePrice>
                             <AddCartDiv
                                 onClick={() => addToCart(e._id)}
@@ -134,7 +147,6 @@ const HomePage = () => {
                                 {(gameCart.some(item => item._id === e._id)) ?
                                     <>
                                         <CheckCircle color={"#DA00FE"} />
-                                        <p>Adicionado ao carrinho</p>
                                     </>
                                     :
                                     <>
@@ -146,20 +158,19 @@ const HomePage = () => {
                     }
                 </GameList>
                 <Title>
-                    Todos os jogos
+                    Catálogo
                 </Title>
                 <GameList>
                     {gameList.map(e =>
                         <GameCard key={e._id}>
                             <GameImage src={e.image} alt={e.name} />
                             <GameTitle>{e.name}</GameTitle>
-                            <GameCategory>{e.category}</GameCategory>
+                            <GameCategory>{e.type}</GameCategory>
                             <GamePrice>R$ {e.price}</GamePrice>
                             <AddCartDiv onClick={() => addToCart(e._id)}>
                                 {(gameCart.some(item => item._id === e._id)) ?
                                     <>
                                         <CheckCircle color={"#DA00FE"} />
-                                        <p>Adicionado ao carrinho</p>
                                     </>
                                     :
                                     <>
