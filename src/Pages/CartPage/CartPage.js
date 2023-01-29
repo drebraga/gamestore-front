@@ -33,6 +33,7 @@ import {
   ButtonContainer,
   ButtonText,
 } from "./styled.js";
+import Alert from "../../Components/Alert/Alert.js";
 
 export default function CartPage() {
   const [isAllSelected, setIsAllSelected] = useState(false);
@@ -44,9 +45,14 @@ export default function CartPage() {
 
   const { token } = useContext(Context);
 
+  const [alertCall, setAlertCall] = useState({
+    status: false,
+    message: "",
+  });
+
   const headerToken = {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token?.token}`,
     },
   };
 
@@ -68,12 +74,12 @@ export default function CartPage() {
   }
 
   async function handleDeleteAllItems(finalConfirmation) {
-    if(finalConfirmation === false) {
+    if (finalConfirmation === false) {
       if (window.confirm("Você tem certeza que deseja limpar o seu carrinho?")) {
         try {
           await api.delete("/clean-cart", {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token?.token}`,
             },
           });
         } catch (error) {
@@ -88,7 +94,7 @@ export default function CartPage() {
       try {
         await api.delete("/clean-cart", {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token?.token}`,
           },
         });
       } catch (error) {
@@ -99,24 +105,28 @@ export default function CartPage() {
       setTotalPrice(0);
       setIsAllSelected(false);
     }
-    
+
   }
 
-
+  function callAlert(message) {
+    setAlertCall({ ...alertCall, message: message, status: true });
+    setTimeout(setAlertCall, 5000, { status: false });
+  }
 
   async function handlePurchaseConfirmation() {
     if (selectedProducts.length === 0) {
-      alert("Você precisa selecionar ao menos um item.");
+      callAlert("Você precisa selecionar ao menos um item.");
       return;
     }
 
     try {
-      await api.post("checkout", {updatedCart:[...selectedProducts]}, {
+      await api.post("checkout", { updatedCart: [...selectedProducts] }, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        }});
+          Authorization: `Bearer ${token?.token}`,
+        }
+      });
 
-        const finalConfirmation = true;
+      const finalConfirmation = true;
       handleDeleteAllItems(finalConfirmation);
       navigate("/checkout");
     } catch (error) {
@@ -127,9 +137,6 @@ export default function CartPage() {
   async function getCartItems() {
     try {
       const items = await api.get("/cart", headerToken);
-
-      console.log(token);
-      console.log(items.data);
       setProducts(items.data);
     } catch (error) {
       console.log(error);
@@ -165,6 +172,7 @@ export default function CartPage() {
   return (
     <Container height={height}>
       <Header />
+      {alertCall.status ? <Alert alertCall={alertCall} setAlertCall={setAlertCall} /> : <></>}
       <ContentContainer>
         <Title>Carrinho</Title>
         <InnerContainer>
