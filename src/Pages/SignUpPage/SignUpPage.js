@@ -3,7 +3,7 @@ import logomarca from "../../assets/images/logo.svg";
 import { useState } from "react";
 import { StyledLink } from "./styled";
 import { ThreeDots } from "react-loader-spinner";
-import { StyledForm } from "../../Components/StyledForm";
+import { StyledForm } from "../../Components/StyledForm/StyledForm";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Carousel from "../../Components/Carousel/Carousel";
@@ -45,7 +45,7 @@ export default function SignUpPage() {
     <Page>
       <BoxLeft>
         <Logo>
-          <img src={logomarca} />
+          <img src={logomarca} alt="logo"/>
           <section>
             <h2>GAME</h2>
             <h3>STORE</h3>
@@ -55,7 +55,7 @@ export default function SignUpPage() {
       </BoxLeft>
       <BoxRight>
         <HiddenLogo>
-          <img src={logomarca} />
+          <img src={logomarca} alt="logo"/>
         </HiddenLogo>
 
         <Title>
