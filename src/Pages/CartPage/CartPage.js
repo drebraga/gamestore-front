@@ -12,6 +12,8 @@ import useWindowDimensions from "../../hooks/useWindowDimensions.js";
 import { ListedItem } from "../../Components/ListedItem/ListedItem.js";
 import { ProductCard } from "../../Components/ProductCart/ProductCart.js";
 import Header from "../../Components/Header/Header.js";
+import Alert from "../../Components/Alert/Alert.js";
+import Loading from "../../Components/Loading/Loading.js";
 
 import {
   Container,
@@ -40,15 +42,21 @@ export default function CartPage() {
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const [contentLoading, setContentLoading] = useState(false);
 
-  const { height, width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   const { token } = useContext(Context);
 
+  const [alertCall, setAlertCall] = useState({
+    status: false,
+    message: "",
+  });
+
   const headerToken = {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token?.token}`,
     },
   };
 
@@ -71,13 +79,11 @@ export default function CartPage() {
 
   async function handleDeleteAllItems(finalConfirmation) {
     if (finalConfirmation === false) {
-      if (
-        window.confirm("Você tem certeza que deseja limpar o seu carrinho?")
-      ) {
+      if (window.confirm("Você tem certeza que deseja limpar o seu carrinho?")) {
         try {
           await api.delete("/clean-cart", {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token?.token}`,
             },
           });
         } catch (error) {
@@ -92,7 +98,7 @@ export default function CartPage() {
       try {
         await api.delete("/clean-cart", {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token?.token}`,
           },
         });
       } catch (error) {
@@ -103,41 +109,44 @@ export default function CartPage() {
       setTotalPrice(0);
       setIsAllSelected(false);
     }
+
+  }
+
+  function callAlert(message) {
+    setAlertCall({ ...alertCall, message: message, status: true });
+    setTimeout(setAlertCall, 5000, { status: false });
   }
 
   async function handlePurchaseConfirmation() {
     if (selectedProducts.length === 0) {
-      alert("Você precisa selecionar ao menos um item.");
+      callAlert("Você precisa selecionar ao menos um item.");
       return;
     }
 
-    setLoading(true);
+    setButtonLoading(true);
 
     try {
-      await api.post(
-        "checkout",
-        { updatedCart: [...selectedProducts] },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      await api.post("checkout", { updatedCart: [...selectedProducts] }, {
+        headers: {
+          Authorization: `Bearer ${token?.token}`,
         }
-      );
+      });
 
       const finalConfirmation = true;
       handleDeleteAllItems(finalConfirmation);
       navigate("/checkout");
     } catch (error) {
       console.log(error);
-      setLoading(false);
+      setButtonLoading(false);
     }
   }
 
   async function getCartItems() {
+    setContentLoading(true);
     try {
       const items = await api.get("/cart", headerToken);
-
       setProducts(items.data);
+      setContentLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -172,6 +181,7 @@ export default function CartPage() {
   return (
     <Container>
       <Header />
+      {alertCall.status ? <Alert alertCall={alertCall} setAlertCall={setAlertCall} /> : <></>}
       <ContentContainer>
         <Title>Carrinho</Title>
         <InnerContainer>
@@ -193,6 +203,11 @@ export default function CartPage() {
                 onClick={() => handleDeleteAllItems(true)}
               />
             </SelectAll>
+
+            {
+              contentLoading &&              
+                <Loading />              
+            }
 
             {products.map((product) => (
               <ProductCard
@@ -236,7 +251,7 @@ export default function CartPage() {
               </RightList>
 
               <ButtonContainer onClick={handlePurchaseConfirmation}>
-                {loading ? (
+                {buttonLoading ? (
                   <ThreeDots width={40} height={30} color="#FFFFFF" />
                 ) : (
                   <ButtonText>Confirmar Compra</ButtonText>
@@ -252,7 +267,7 @@ export default function CartPage() {
               width={width < 768 ? width : 464}
               onClick={handlePurchaseConfirmation}
             >
-              {loading ? (
+              {buttonLoading ? (
                   <ThreeDots width={40} height={30} color="#FFFFFF" />
                 ) : (
                   <ButtonText>Confirmar Compra</ButtonText>

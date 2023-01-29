@@ -1,5 +1,4 @@
-import { useState } from "react";
-import Loading from "../../Components/Loading/Loading";
+import { useContext} from "react";
 import {
   HiddenLogo,
   LeftContent,
@@ -13,46 +12,46 @@ import {
 } from "./styled";
 import logo from "../../assets/images/logo.svg";
 import image from "../../assets/images/image.svg";
+import Context from "../../Context/Context";
+import ErrorPage from "../../Components/Error404/ErrorPage";
 
 export default function CheckoutPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const { token } = useContext(Context);
+
+  if (token === null || token === "") {
+    return < ErrorPage/>;
+  }
 
   return (
     <>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <MainPage>
-          <LeftContent>
-            <Logo>
-              <img src={logo} />
-              <section>
-                <h2>GAME</h2>
-                <h3>STORE</h3>
-              </section>
-            </Logo>
-            <MainTitle>
-              <div></div>
-              <h1>Compra realizada com sucesso!</h1>
-            </MainTitle>
-            <HiddenLogo>
-              <img src={image}></img>
-            </HiddenLogo>
-            <MainText>
-              Nós da equipe <span>GAME STORE</span> agradecemos a sua confiança
-              na qualidade de nossos serviços, volte sempre :)
-            </MainText>
-            <NavButton onClick={()=>{
-              console.log("cliquei")
-            }} to="/">Continuar Comprando</NavButton>
-          </LeftContent>
-          <RightContent>
-            <RightLogo>
-              <img src={image} />
-            </RightLogo>
-          </RightContent>
-        </MainPage>
-      )}
+      <MainPage>
+        <LeftContent>
+          <Logo>
+            <img src={logo} alt="logo" />
+            <section>
+              <h2>GAME</h2>
+              <h3>STORE</h3>
+            </section>
+          </Logo>
+          <MainTitle>
+            <div></div>
+            <h1>Compra realizada com sucesso!</h1>
+          </MainTitle>
+          <HiddenLogo>
+            <img src={image} alt="logo"></img>
+          </HiddenLogo>
+          <MainText>
+            Nós da equipe <span>GAME STORE</span> agradecemos a sua confiança na
+            qualidade de nossos serviços, volte sempre :)
+          </MainText>
+          <NavButton to="/">Continuar Comprando</NavButton>
+        </LeftContent>
+        <RightContent>
+          <RightLogo>
+            <img src={image} alt="logo" />
+          </RightLogo>
+        </RightContent>
+      </MainPage>
     </>
   );
 }

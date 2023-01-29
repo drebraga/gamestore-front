@@ -1,4 +1,4 @@
-import { StyledForm } from "../../Components/StyledForm";
+import { StyledForm } from "../../Components/StyledForm/StyledForm";
 import {
   BoxLeft,
   BoxRight,
@@ -17,6 +17,7 @@ import Carousel from "../../Components/Carousel/Carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Context from "../../Context/Context";
 
+
 export default function LoginPage() {
   const { token, setToken } = useContext(Context);
   const [form, setForm] = useState({
@@ -27,8 +28,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token === "") return;
-    if (token?.token.length === 36) {
+    if (token?.length === 36) {
       setIsLoading(true);
       axios.get(`${process.env.REACT_APP_API_URL}/sign-in`, {
         headers: {
@@ -69,11 +69,12 @@ export default function LoginPage() {
         setIsLoading(false)
       });
   }
+
   return (
     <PageLogin>
       <BoxLeft>
         <Logo>
-          <img src={logomarca} />
+          <img src={logomarca} alt="logo"/>
           <section>
             <h2>GAME</h2>
             <h3>STORE</h3>
@@ -83,7 +84,7 @@ export default function LoginPage() {
       </BoxLeft>
       <BoxRight>
         <HiddenLogo>
-          <img src={logomarca} />
+          <img src={logomarca} alt="logo"/>
         </HiddenLogo>
         <Title>
           <div></div>
