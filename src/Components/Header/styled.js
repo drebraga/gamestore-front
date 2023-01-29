@@ -13,6 +13,11 @@ export const HeaderContainer = styled.header`
     justify-content: space-between;
     align-items: center;
     padding: 0 2%;
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, 
+    rgba(0, 0, 0, 0.09) 0px 4px 2px, 
+    rgba(0, 0, 0, 0.09) 0px 8px 4px, 
+    rgba(0, 0, 0, 0.09) 0px 16px 8px, 
+    rgba(0, 0, 0, 0.09) 0px 32px 16px;
 `;
 
 export const LogoContainer = styled.div`
@@ -20,11 +25,19 @@ export const LogoContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 130px;
+    cursor: pointer;
 `;
 
 export const MenuContainer = styled.div`
     display: flex;
     align-items: center;
+    p {
+        margin-right: 5px;
+        font-family: "Inter", sans-serif;
+    }
+    &:hover > :not(:hover) {
+        opacity: .4;
+    }
 `;
 
 export const LogoStyle = styled.img`
@@ -39,41 +52,67 @@ export const TitleContainer = styled.div`
     font-size: 16px;
     line-height: 19px;
     color: #DA00FF;
+    cursor: pointer;
 `;
 
 export const Title1 = styled.h1`
     text-align: start;
+    text-shadow: 2px 2px #000000;
 `;
 
 export const Title2 = styled.h1`
     text-align: end;
     font-weight: 700;
+    text-shadow: 2px 2px #000000;
 `;
 
 export const MenuIcon = styled.div`
+    background-color: #000000;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     width: 50px;
     height: 50px;
     border-radius: 25px;
     border: 1px solid #DA00FF;
     margin-left: 5px;
     position: relative;
-    p {
-        font-size: 11px;
-        color: #000000;
-        background-color: #DA00FF;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        border: 1px solid #000000;
-        margin-left: 5px;
-        position: absolute;
-        top: -5px;
-        right: -5px;
-    }    
+    cursor: pointer;
+    box-shadow: 2px 2px #000000;
+    span {
+        display: none;
+    }
+    &:hover {     
+        span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            background-color: #000000;
+            border-radius: 10px;
+            height: 40px;
+            position: absolute;
+            text-align: center;
+            width: 70px;
+            bottom: -40px;
+            left: -10px;
+        }
+    }
+`;
+
+export const CartNumberP = styled.div`
+    font-size: 11px;
+    color: #000000;
+    background-color: #DA00FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #000000;
+    margin-left: 5px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
 `;

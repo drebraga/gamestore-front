@@ -1,7 +1,7 @@
 import {
     HeaderContainer, LogoContainer, LogoStyle,
     TitleContainer, Title1, Title2, MenuContainer,
-    MenuIcon
+    MenuIcon, CartNumberP
 } from "./styled"
 import Logo from "../../assets/images/logo.svg"
 import { House, ShoppingCartSimple, SignIn, UserCircle } from "phosphor-react";
@@ -33,24 +33,49 @@ const Header = ({ routeOrigin, cartNumber }) => {
                 </TitleContainer>
             </LogoContainer>
             <MenuContainer>
+                { token ? <p>Olá, {token.name}</p> : <></> }
                 {
                     routeOrigin === "/" ? <></> :
-                        <MenuIcon><House size={24} onClick={() => navigate("/")} /></MenuIcon>
+                        <MenuIcon
+                            onClick={() => navigate("/")}
+                        >
+                            <House size={24} />
+                            <span>Home</span>
+                        </MenuIcon>
                 }
                 {
                     routeOrigin === "/" ?
                         <>{
                             token ?
                                 <>
-                                    <MenuIcon>
-                                        <ShoppingCartSimple size={24} onClick={() => navigate("/carrinho")} />
-                                        {cartNumber > 0 ? <p>{cartNumber}</p> : <></>}
+                                    <MenuIcon
+                                        onClick={() => navigate("/carrinho")}
+                                    >
+                                        <ShoppingCartSimple size={24} />
+                                        {cartNumber > 0 ? <CartNumberP>{cartNumber}</CartNumberP> : <></>}
+                                        <span>Meu<br />Carrinho</span>
                                     </MenuIcon>
-                                    <MenuIcon><SignIn size={24} onClick={() => Logout()} /></MenuIcon>
+                                    <MenuIcon
+                                        onClick={() => Logout()}
+                                    >
+                                        <SignIn size={24} />
+                                        <span>Sair</span>
+                                    </MenuIcon>
                                 </>
                                 :
-                                <MenuIcon><UserCircle size={24} onClick={() => navigate("/login")} /></MenuIcon>
-                        }</> : <><MenuIcon><SignIn size={24} onClick={() => Logout()} /></MenuIcon></>
+                                <MenuIcon
+                                    onClick={() => navigate("/login")}
+                                >
+                                    <UserCircle size={24} />
+                                    <span>Login</span>
+                                </MenuIcon>
+                        }</> :
+                        <MenuIcon
+                            onClick={() => navigate("/login")}
+                        >
+                            <UserCircle size={24} />
+                            <span>Login</span>
+                        </MenuIcon>
                 }
             </MenuContainer >
         </HeaderContainer >

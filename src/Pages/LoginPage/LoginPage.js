@@ -32,7 +32,7 @@ export default function LoginPage() {
       setIsLoading(true);
       axios.get(`${process.env.REACT_APP_API_URL}/sign-in`, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token.token}`
         }
       })
         .then((res) => {
@@ -60,8 +60,8 @@ export default function LoginPage() {
     axios.post(URL, form)
       .then((res) => {
         setIsLoading(true);
-        setToken(res.data.token);
-        localStorage.setItem("token", JSON.stringify(res.data.token));
+        setToken(res.data);
+        localStorage.setItem("token", JSON.stringify(res.data));
         navigate("/");
       })
       .catch((err) => {
