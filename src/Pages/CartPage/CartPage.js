@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Square, TrashSimple, CheckSquareOffset } from "phosphor-react";
 
 import { api } from "../../Services/api.js";
+
+import Context from "../../Context/Context.js";
 
 import useWindowDimensions from "../../hooks/useWindowDimensions.js";
 
@@ -36,9 +38,17 @@ export default function CartPage() {
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([]);
-  const [selectedProducts, setSelectedProducts] = useState([]);  
+  const [selectedProducts, setSelectedProducts] = useState([]);
 
   const { height, width } = useWindowDimensions();
+
+  const { token } = useContext(Context);
+
+  const headerToken = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
   const navigate = useNavigate();
 
@@ -47,24 +57,40 @@ export default function CartPage() {
       setIsAllSelected(false);
       setTotalPrice(0);
       setSelectedProducts([]);
-    } else if (products.length > 0){
+    } else if (products.length > 0) {
       setIsAllSelected(true);
 
-      let total = products.map((i) => i.value).reduce((a, b) => a + b);
+      let total = products.map((i) => i.price).reduce((a, b) => a + b);
 
       setSelectedProducts(products);
       setTotalPrice(total);
     }
   }
 
-  async function handleDeleteAllItems() {
-    if(window.confirm("Você tem certeza que deseja limpar o seu carrinho?")) {
+  async function handleDeleteAllItems(finalConfirmation) {
+    if(finalConfirmation === false) {
+      if (window.confirm("Você tem certeza que deseja limpar o seu carrinho?")) {
+        try {
+          await api.delete("/clean-cart", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        } catch (error) {
+          console.log(error);
+        }
+        setProducts([]);
+        setSelectedProducts([]);
+        setTotalPrice(0);
+        setIsAllSelected(false);
+      }
+    } else {
       try {
-        await api.put("/clear-cart", {
+        await api.delete("/clean-cart", {
           headers: {
-            Authorization: `Bearer e567ff5b-ac02-4c14-8b2f-1361409d3c97`
-          }
-        })
+            Authorization: `Bearer ${token}`,
+          },
+        });
       } catch (error) {
         console.log(error);
       }
@@ -73,63 +99,63 @@ export default function CartPage() {
       setTotalPrice(0);
       setIsAllSelected(false);
     }
+    
   }
 
+
+
   async function handlePurchaseConfirmation() {
-    if(selectedProducts.length === 0) {
+    if (selectedProducts.length === 0) {
       alert("Você precisa selecionar ao menos um item.");
       return;
     }
 
     try {
-      await api.put("/update-cart", {
+      await api.post("checkout", {updatedCart:[...selectedProducts]}, {
         headers: {
-          Authorization: `Bearer e567ff5b-ac02-4c14-8b2f-1361409d3c97`
-        }, updatedCart: [...products]
-      })
+          Authorization: `Bearer ${token}`,
+        }});
 
-
-
+        const finalConfirmation = true;
+      handleDeleteAllItems(finalConfirmation);
       navigate("/checkout");
     } catch (error) {
       console.log(error);
-    }    
+    }
   }
 
   async function getCartItems() {
     try {
-      const items = await api.get("/cart", {
-        headers: {
-          Authorization: `Bearer e567ff5b-ac02-4c14-8b2f-1361409d3c97`
-        }
-      })
+      const items = await api.get("/cart", headerToken);
 
+      console.log(token);
       console.log(items.data);
-      setProducts(items.data)
+      setProducts(items.data);
     } catch (error) {
       console.log(error);
     }
   }
 
-  useEffect(()=> {
-    if(selectedProducts.length === products.length && products.length > 0) {
+  useEffect(() => {
+    if (selectedProducts.length === products.length && products.length > 0) {
       setIsAllSelected(true);
-    } else if(selectedProducts.length === 0) {
-      setIsAllSelected(false)
-    }
-    else {
+    } else if (selectedProducts.length === 0) {
+      setIsAllSelected(false);
+    } else {
       setIsAllSelected(false);
     }
   }, [selectedProducts, products]);
 
-  useEffect(()=> {
-    if(selectedProducts.length > 0) {
-      let total = selectedProducts.map((i) => i.price * i.qty).reduce((a, b) => a + b);
+  useEffect(() => {
+    if (selectedProducts.length > 0) {
+      let total = selectedProducts
+        .map((i) => i.price * i.qty)
+        .reduce((a, b) => a + b);
       setTotalPrice(total);
     } else {
       setTotalPrice(0);
     }
-  }, [selectedProducts])
+  }, [selectedProducts]);
 
   useEffect(() => {
     getCartItems();
@@ -153,12 +179,17 @@ export default function CartPage() {
 
                 <Text>Selecionar todos os itens do carrinho</Text>
               </SelectAllInnerContainer>
-              <TrashSimple color="#8A8A8A" size={33} weight="bold" onClick={handleDeleteAllItems}/>
+              <TrashSimple
+                color="#8A8A8A"
+                size={33}
+                weight="bold"
+                onClick={handleDeleteAllItems}
+              />
             </SelectAll>
 
             {products.map((product) => (
               <ProductCard
-                key={product.name}
+                key={product._id}
                 isSelected={isAllSelected}
                 product={product}
                 products={products}
@@ -167,7 +198,6 @@ export default function CartPage() {
                 setSelectedProducts={setSelectedProducts}
               />
             ))}
-
           </LeftContent>
 
           {width > 1023 && (
@@ -207,12 +237,17 @@ export default function CartPage() {
 
         {width < 1024 && (
           <Footer>
-            <ButtonContainer width={width < 768 ? width : 464} onClick={handlePurchaseConfirmation}>
+            <ButtonContainer
+              width={width < 768 ? width : 464}
+              onClick={handlePurchaseConfirmation}
+            >
               <ButtonText>Confirmar Compra</ButtonText>
             </ButtonContainer>
             {width > 768 && (
               <RCValue>
-                <span>{"\u007B"}</span>R$ {totalPrice.toFixed(2).toString().replace(".", ",")}<span>{"\u007D"}</span>
+                <span>{"\u007B"}</span>R${" "}
+                {totalPrice.toFixed(2).toString().replace(".", ",")}
+                <span>{"\u007D"}</span>
               </RCValue>
             )}
           </Footer>

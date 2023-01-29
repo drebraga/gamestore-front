@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CheckSquareOffset, Square, TrashSimple } from "phosphor-react";
 
 import {
@@ -17,6 +17,8 @@ import {
   HeaderInnerContainer,
   DescriptionContainer,
 } from "./styled.js";
+import { api } from "../../Services/api.js";
+import Context from "../../Context/Context.js";
 
 export function ProductCard({
   isSelected,
@@ -27,6 +29,8 @@ export function ProductCard({
   setSelectedProducts,
 }) {
   const [select, setSelect] = useState(false);
+
+  const { token } = useContext(Context);
 
   function handleDecrement(product) {
     if (product.qty > 1) {
@@ -74,6 +78,21 @@ export function ProductCard({
       let arr = [...selectedProducts];
       arr.splice(indexSelected, 1);
       setSelectedProducts(arr);
+    }
+
+    updateCart(arr);
+  }
+
+  async function updateCart(arr) {   
+
+    try {
+      await api.put("update-cart", {updatedCart:[...arr]}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }});
+
+    } catch (error) {
+      console.log(error);
     }
   }
 
