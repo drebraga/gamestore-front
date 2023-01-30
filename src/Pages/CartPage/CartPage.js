@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Square, TrashSimple, CheckSquareOffset } from "phosphor-react";
+import { ThreeDots } from "react-loader-spinner";
 
 import { api } from "../../Services/api.js";
 
@@ -11,6 +12,8 @@ import useWindowDimensions from "../../hooks/useWindowDimensions.js";
 import { ListedItem } from "../../Components/ListedItem/ListedItem.js";
 import { ProductCard } from "../../Components/ProductCart/ProductCart.js";
 import Header from "../../Components/Header/Header.js";
+import Alert from "../../Components/Alert/Alert.js";
+import Loading from "../../Components/Loading/Loading.js";
 
 import {
   Container,
@@ -33,15 +36,16 @@ import {
   ButtonContainer,
   ButtonText,
 } from "./styled.js";
-import Alert from "../../Components/Alert/Alert.js";
 
 export default function CartPage() {
   const [isAllSelected, setIsAllSelected] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [products, setProducts] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const [contentLoading, setContentLoading] = useState(false);
 
-  const { height, width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   const { token } = useContext(Context);
 
@@ -119,6 +123,8 @@ export default function CartPage() {
       return;
     }
 
+    setButtonLoading(true);
+
     try {
       await api.post("checkout", { updatedCart: [...selectedProducts] }, {
         headers: {
@@ -131,13 +137,16 @@ export default function CartPage() {
       navigate("/checkout");
     } catch (error) {
       console.log(error);
+      setButtonLoading(false);
     }
   }
 
   async function getCartItems() {
+    setContentLoading(true);
     try {
       const items = await api.get("/cart", headerToken);
       setProducts(items.data);
+      setContentLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -170,7 +179,7 @@ export default function CartPage() {
   }, []);
 
   return (
-    <Container height={height}>
+    <Container>
       <Header />
       {alertCall.status ? <Alert alertCall={alertCall} setAlertCall={setAlertCall} /> : <></>}
       <ContentContainer>
@@ -191,9 +200,14 @@ export default function CartPage() {
                 color="#8A8A8A"
                 size={33}
                 weight="bold"
-                onClick={handleDeleteAllItems}
+                onClick={() => handleDeleteAllItems(true)}
               />
             </SelectAll>
+
+            {
+              contentLoading &&              
+                <Loading />              
+            }
 
             {products.map((product) => (
               <ProductCard
@@ -237,7 +251,11 @@ export default function CartPage() {
               </RightList>
 
               <ButtonContainer onClick={handlePurchaseConfirmation}>
-                <ButtonText>Confirmar Compra</ButtonText>
+                {buttonLoading ? (
+                  <ThreeDots width={40} height={30} color="#FFFFFF" />
+                ) : (
+                  <ButtonText>Confirmar Compra</ButtonText>
+                )}
               </ButtonContainer>
             </RightContent>
           )}
@@ -249,7 +267,11 @@ export default function CartPage() {
               width={width < 768 ? width : 464}
               onClick={handlePurchaseConfirmation}
             >
-              <ButtonText>Confirmar Compra</ButtonText>
+              {buttonLoading ? (
+                  <ThreeDots width={40} height={30} color="#FFFFFF" />
+                ) : (
+                  <ButtonText>Confirmar Compra</ButtonText>
+                )}
             </ButtonContainer>
             {width > 768 && (
               <RCValue>
